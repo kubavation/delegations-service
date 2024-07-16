@@ -1,18 +1,19 @@
 import {Sequelize} from "sequelize-typescript";
+import {Delegation} from "../../delegations/model/delegation";
 
 export const databaseProvider = [
     {
         provide: 'SEQUELIZE',
         useFactory: async () => {
             const sequelize = new Sequelize({
-                dialect: 'mysql',
+                dialect: 'postgres',
                 host: 'localhost',
-                port: 3306,
-                username: 'root',
-                password: 'password',
-                database: 'nest',
+                port: 5432,
+                username: 'admin',
+                password: 'admin',
+                database: 'delegations',
+                models: [Delegation]
             });
-            sequelize.addModels([]);
             await sequelize.sync();
             return sequelize;
         }
