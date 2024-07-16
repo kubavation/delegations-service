@@ -1,17 +1,19 @@
 import {Sequelize} from "sequelize-typescript";
 import {Delegation} from "../../delegations/model/delegation";
+import {ConfigService} from "@nestjs/config";
 
 export const databaseProvider = [
     {
         provide: 'SEQUELIZE',
-        useFactory: async () => {
+        inject: [ConfigService],
+        useFactory: async (configService: ConfigService) => {
             const sequelize = new Sequelize({
                 dialect: 'postgres',
-                host: 'localhost',
-                port: 5432,
-                username: 'admin',
-                password: 'admin',
-                database: 'delegations',
+                host: configService.get<string>('DB_HOST'),
+                port: configService.get<number>('DB_PORT'),
+                username: configService.get<string>('DB_USERNAME'),
+                password: configService.get<string>('DB_PASSWORD'),
+                database: configService.get<string>('DB_SCHEMA'),
                 models: [Delegation]
             });
             await sequelize.sync();
