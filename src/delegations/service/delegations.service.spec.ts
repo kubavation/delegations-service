@@ -1,32 +1,19 @@
 import {DelegationsService} from "./delegations.service";
-import {Test, TestingModule} from "@nestjs/testing";
-import {getModelToken} from "@nestjs/sequelize";
 import {Delegation} from "../model/delegation";
 import {NotFoundException} from "@nestjs/common";
-
-const mockDelegation = {
-    findAll: jest.fn(),
-    findOne: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-    destroy: jest.fn(),
-};
+import {TestBed} from "@automock/jest";
+import {getModelToken} from "@nestjs/sequelize";
 
 describe('DelegationsService', () => {
     let service: DelegationsService;
+    let mockDelegation: jest.Mocked<typeof Delegation>;
 
-    beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            providers: [
-                DelegationsService,
-                {
-                    provide: getModelToken(Delegation),
-                    useValue: mockDelegation,
-                },
-            ],
-        }).compile();
 
-        service = module.get<DelegationsService>(DelegationsService);
+    beforeAll(() => {
+        const { unit, unitRef } = TestBed.create(DelegationsService).compile();
+
+        service = unit;
+        mockDelegation = unitRef.get(getModelToken(Delegation));
     });
 
     it('should be defined', () => {
@@ -36,7 +23,7 @@ describe('DelegationsService', () => {
     describe('findAll', () => {
         it('should return an array of delegations', async () => {
             const result = [{ id: '1', name: 'Test' }];
-            mockDelegation.findAll.mockResolvedValue(result);
+            jest.spyOn(mockDelegation, 'findAll').mockResolvedValue(result as any[]);
             expect(await service.findAll()).toBe(result);
         });
     });
@@ -44,12 +31,12 @@ describe('DelegationsService', () => {
     describe('findOne', () => {
         it('should return a delegation if found', async () => {
             const result = { id: '1', name: 'Test' };
-            mockDelegation.findOne.mockResolvedValue(result);
+            jest.spyOn(mockDelegation, 'findOne').mockResolvedValue(result as any);
             expect(await service.findOne('1')).toBe(result);
         });
 
         it('should throw a NotFoundException if not found', async () => {
-            mockDelegation.findOne.mockResolvedValue(null);
+            jest.spyOn(mockDelegation, 'findOne').mockResolvedValue(null);
             await expect(service.findOne('1')).rejects.toThrow(NotFoundException);
         });
     });
@@ -58,7 +45,7 @@ describe('DelegationsService', () => {
         it('should create and return a delegation', async () => {
             const delegationData = { name: 'Test' };
             const result = { id: '1', ...delegationData };
-            mockDelegation.create.mockResolvedValue(result);
+            jest.spyOn(mockDelegation, 'create').mockResolvedValue(result);
             expect(await service.create(delegationData as any)).toBe(result);
         });
     });
@@ -67,12 +54,12 @@ describe('DelegationsService', () => {
         it('should update and return the delegation', async () => {
             const delegationData = { name: 'Updated Test' };
             const existingDelegation = { id: '1', name: 'Test', update: jest.fn().mockResolvedValue(delegationData) };
-            mockDelegation.findOne.mockResolvedValue(existingDelegation);
+            jest.spyOn(mockDelegation, 'findOne').mockResolvedValue(existingDelegation as any);
             expect(await service.update('1', delegationData as any)).toBe(delegationData);
         });
 
         it('should throw a NotFoundException if not found', async () => {
-            mockDelegation.findOne.mockResolvedValue(null);
+            jest.spyOn(mockDelegation, 'findOne').mockResolvedValue(null);
             await expect(service.update('1', {} as Delegation)).rejects.toThrow(NotFoundException);
         });
     });
@@ -80,12 +67,13 @@ describe('DelegationsService', () => {
     describe('remove', () => {
         it('should delete the delegation', async () => {
             const existingDelegation = { id: '1', name: 'Test', destroy: jest.fn() };
-            mockDelegation.findOne.mockResolvedValue(existingDelegation);
+            jest.spyOn(mockDelegation, 'findOne').mockResolvedValue(existingDelegation as any);
             await service.remove('1');
             expect(existingDelegation.destroy).toHaveBeenCalled();
         });
 
         it('should throw a NotFoundException if not found', async () => {
+            jest.spyOn(mockDelegation, 'findOne').mockResolvedValue(null);
             mockDelegation.findOne.mockResolvedValue(null);
             await expect(service.remove('1')).rejects.toThrow(NotFoundException);
         });
