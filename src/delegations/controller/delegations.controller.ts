@@ -17,12 +17,12 @@ export class DelegationsController {
         return this.delegationsService.create(delegation);
     }
 
-    @Put('/:id')
+    @Put(':id')
     update(id: string, data: Delegation) {
         return this.delegationsService.update(id, data);
     }
 
-    @Delete('/:id')
+    @Delete(':id')
     delete(id: string) {
         return this.delegationsService.remove(id);
     }

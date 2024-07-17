@@ -19,7 +19,7 @@ export class DelegationsService {
             where: { id }
         })
 
-        if (delegation) {
+        if (!delegation) {
             throw new NotFoundException(`Delegation with id ${id} not found`);
         }
 
