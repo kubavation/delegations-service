@@ -6,6 +6,7 @@ import {DbModule} from "./configuration/db-module/db-module.module";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {SequelizeModule} from "@nestjs/sequelize";
 import {Delegation} from "./delegations/model/delegation";
+import {DelegationHistory} from "./delegations/model/delegation-history";
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import {Delegation} from "./delegations/model/delegation";
               username: configService.get<string>('DB_USERNAME'),
               password: configService.get<string>('DB_PASSWORD'),
               database: configService.get<string>('DB_SCHEMA'),
-              models: [Delegation]
+              models: [Delegation, DelegationHistory]
           })
       }),
       ConfigModule.forRoot({

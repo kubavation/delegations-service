@@ -1,6 +1,9 @@
-import {Column, DataType, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {Column, DataType, HasMany, Model, PrimaryKey, Table} from "sequelize-typescript";
+import {DelegationHistory} from "./delegation-history";
 
-@Table
+@Table({
+    underscored: true
+})
 export class Delegation extends Model<Delegation> {
 
     @PrimaryKey
@@ -10,6 +13,7 @@ export class Delegation extends Model<Delegation> {
     @Column
     number: string;
 
-    //todo
+    @HasMany(() => DelegationHistory)
+    history: DelegationHistory[];
 
 }
