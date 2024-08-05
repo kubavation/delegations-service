@@ -4,6 +4,7 @@ import {Delegation} from "../model/delegation";
 import {CreateDelegationDto} from "../dto/create-delegation-dto";
 import {DelegationDto} from "../dto/delegation-dto";
 import { v4 as uuidv4 } from 'uuid';
+import {UpdateDelegationDto} from "../dto/update-delegation-dto";
 
 @Injectable()
 export class DelegationsService {
@@ -37,11 +38,13 @@ export class DelegationsService {
         });
     }
 
-    async update(id: string, data: Delegation) {
+    async update(id: string, data: UpdateDelegationDto) {
 
         const delegation = await this.findOne(id);
 
-        return delegation.update(data);
+        return delegation.update({
+            ...data
+        });
     }
 
     async remove(id: string) {
