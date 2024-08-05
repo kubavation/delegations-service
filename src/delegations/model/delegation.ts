@@ -5,7 +5,9 @@ import {DelegationHistory} from "./delegation-history";
     underscored: true,
     version: true,
     createdAt: true,
-    updatedAt: true
+    updatedAt: true,
+    paranoid: true,
+    deletedAt: true,
 })
 export class Delegation extends Model<Delegation> {
 
