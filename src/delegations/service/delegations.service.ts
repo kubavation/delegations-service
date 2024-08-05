@@ -3,6 +3,7 @@ import {InjectModel} from "@nestjs/sequelize";
 import {Delegation} from "../model/delegation";
 import {CreateDelegationDto} from "../dto/create-delegation-dto";
 import {DelegationDto} from "../dto/delegation-dto";
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class DelegationsService {
@@ -29,7 +30,11 @@ export class DelegationsService {
     }
 
     async create(data: CreateDelegationDto) {
-        return this.delegation.create(data);
+
+        return this.delegation.create({
+            ...data,
+            id: uuidv4()
+        });
     }
 
     async update(id: string, data: Delegation) {
