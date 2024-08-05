@@ -1,6 +1,7 @@
 import {Controller, Delete, Get, Post, Put} from '@nestjs/common';
 import {DelegationsService} from "../service/delegations.service";
 import {Delegation} from "../model/delegation";
+import {CreateDelegationDto} from "../dto/create-delegation-dto";
 
 @Controller('delegations')
 export class DelegationsController {
@@ -13,7 +14,7 @@ export class DelegationsController {
     }
 
     @Post()
-    create(delegation: Delegation) {
+    create(delegation: CreateDelegationDto) {
         return this.delegationsService.create(delegation);
     }
 

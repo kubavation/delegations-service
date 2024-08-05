@@ -1,6 +1,8 @@
 import {Injectable, NotFoundException} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
 import {Delegation} from "../model/delegation";
+import {CreateDelegationDto} from "../dto/create-delegation-dto";
+import {DelegationDto} from "../dto/delegation-dto";
 
 @Injectable()
 export class DelegationsService {
@@ -9,7 +11,7 @@ export class DelegationsService {
     }
 
 
-    async findAll() {
+    async findAll(): Promise<DelegationDto[]> {
         return this.delegation.findAll();
     }
 
@@ -26,7 +28,7 @@ export class DelegationsService {
         return delegation;
     }
 
-    async create(data: Delegation) { //todo DTO
+    async create(data: CreateDelegationDto) {
         return this.delegation.create(data);
     }
 

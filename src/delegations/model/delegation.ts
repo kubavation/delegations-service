@@ -2,7 +2,10 @@ import {Column, DataType, HasMany, Model, PrimaryKey, Table} from "sequelize-typ
 import {DelegationHistory} from "./delegation-history";
 
 @Table({
-    underscored: true
+    underscored: true,
+    version: true,
+    createdAt: true,
+    updatedAt: true
 })
 export class Delegation extends Model<Delegation> {
 
@@ -12,6 +15,12 @@ export class Delegation extends Model<Delegation> {
 
     @Column
     number: string;
+
+    @Column
+    dateFrom: Date;
+
+    @Column
+    dateTo: Date;
 
     @HasMany(() => DelegationHistory)
     history: DelegationHistory[];
