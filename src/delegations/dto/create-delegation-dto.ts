@@ -1,6 +1,7 @@
 import {DelegationDto} from "./delegation-dto";
+import {OmitType} from "@nestjs/swagger";
 
-export interface CreateDelegationDto
-    extends Omit<DelegationDto, 'id' | 'createdAt' | 'updatedAt'> {
+export class CreateDelegationDto
+    extends OmitType(DelegationDto, ['id' , 'createdAt' , 'updatedAt'] as const) {
 
 }
