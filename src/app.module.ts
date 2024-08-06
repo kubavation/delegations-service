@@ -7,6 +7,8 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import {SequelizeModule} from "@nestjs/sequelize";
 import {Delegation} from "./delegations/model/delegation";
 import {DelegationHistory} from "./delegations/model/delegation-history";
+import {AuthGuard, KeycloakConnectModule} from "nest-keycloak-connect";
+import {APP_GUARD, Reflector} from "@nestjs/core";
 
 @Module({
   imports: [
@@ -28,8 +30,21 @@ import {DelegationHistory} from "./delegations/model/delegation-history";
       ConfigModule.forRoot({
         isGlobal: true,
       }),
+      KeycloakConnectModule.register({
+          authServerUrl: 'http://localhost:8080/auth',
+          realm: 'master',
+          clientId: 'delegations',
+          secret: 'o2tiEt3sF6J30OrUY3dE3PCHoUO3tX3m',
+      })
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+      AppService,
+      {
+          provide: APP_GUARD,
+          useClass: AuthGuard,
+      },
+  ],
+  exports: [KeycloakConnectModule]
 })
 export class AppModule {}
