@@ -1,6 +1,5 @@
 import {Body, Controller, Delete, Get, HttpStatus, Param, Post, Put} from '@nestjs/common';
 import {DelegationsService} from "../service/delegations.service";
-import {Delegation} from "../model/delegation";
 import {CreateDelegationDto} from "../dto/create-delegation-dto";
 import {ApiBody, ApiOperation, ApiParam, ApiResponse} from "@nestjs/swagger";
 import {DelegationDto} from "../dto/delegation-dto";
