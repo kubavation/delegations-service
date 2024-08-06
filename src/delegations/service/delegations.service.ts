@@ -31,7 +31,6 @@ export class DelegationsService {
     }
 
     async create(data: CreateDelegationDto) {
-
         return this.delegation.create({
             ...data,
             id: uuidv4()
@@ -39,18 +38,14 @@ export class DelegationsService {
     }
 
     async update(id: string, data: UpdateDelegationDto) {
-
-        const delegation = await this.findOne(id);
-
-        return delegation.update({
-            ...data
-        });
+        return await this.findOne(id)
+            .then(delegation => delegation.update({
+                ...data
+            }));
     }
 
     async remove(id: string) {
-
-        const delegation = await this.findOne(id);
-
-        await delegation.destroy();
+        return await this.findOne(id)
+            .then(delegation => delegation.destroy());
     }
 }

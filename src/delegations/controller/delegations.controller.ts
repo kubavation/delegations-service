@@ -1,6 +1,5 @@
-import {Body, Controller, Delete, Get, HttpStatus, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpStatus, Param, Post, Put} from '@nestjs/common';
 import {DelegationsService} from "../service/delegations.service";
-import {Delegation} from "../model/delegation";
 import {CreateDelegationDto} from "../dto/create-delegation-dto";
 import {ApiBody, ApiOperation, ApiParam, ApiResponse} from "@nestjs/swagger";
 import {DelegationDto} from "../dto/delegation-dto";
@@ -31,7 +30,7 @@ export class DelegationsController {
     @ApiBody({ type: UpdateDelegationDto })
     @ApiParam({name: 'id', description: 'Delegation identifier'})
     @ApiResponse({status: HttpStatus.OK, description: 'Delegation successfully updated'})
-    update(id: string, data: UpdateDelegationDto) {
+    update(@Param('id') id: string, data: UpdateDelegationDto) {
         return this.delegationsService.update(id, data);
     }
 
@@ -39,7 +38,7 @@ export class DelegationsController {
     @ApiOperation({description: 'Delete delegation'})
     @ApiParam({name: 'id', description: 'Delegation identifier'})
     @ApiResponse({status: HttpStatus.NO_CONTENT, description: 'Delegation successfully deleted'})
-    delete(id: string) {
+    delete(@Param('id') id: string) {
         return this.delegationsService.remove(id);
     }
 }

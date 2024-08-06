@@ -26,5 +26,4 @@ export class Delegation extends Model<Delegation> {
 
     @HasMany(() => DelegationHistory)
     history: DelegationHistory[];
-
 }
