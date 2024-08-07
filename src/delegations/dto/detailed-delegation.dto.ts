@@ -9,6 +9,6 @@ export class DetailedDelegationDto extends DelegationDto {
         description: "End date of the delegation",
         isArray: true
     })
-    history: DelegationHistoryDto[]
+    history: DelegationHistoryDto[];
 
 }
